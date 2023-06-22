@@ -2,57 +2,71 @@ package atm;
 
 import java.util.ArrayList;
 
-public class AccountManager {	
-	private static AccountManager instance = new AccountManager();	
-	private ArrayList<Account> list = new ArrayList<Account>();	
+public class AccountManager {
 	
-	private AccountManager() {}
+	private ArrayList<Account> list = new ArrayList<Account>();
 	
+	private AccountManager(){}
+	private static AccountManager instance = new AccountManager();
 	public static AccountManager getInstance() {
 		return instance;
 	}
-
-	public void createAcc() {
-		int log = isLogin();
-		if(log != -1) {
-			System.out.print("password : ");
-			String password = Atm.scan.next();
+	
+	public void createAccount(User user) {
+		Account acc = null;
+		
+		int accNumber = generateRandomCode();
+		int accPassword = Atm.inputNumber("계좌 비밀번호");
+		
+		if(accPassword != -1) {
+			acc = new Account(user.getUserCode(), accNumber, accPassword);
+			this.list.add(acc);
 			
-			String userPassword = UserManager.getInstance().getList().get(log).getPassword(); 
-			if(userPassword.equals(password)) {
-				int userCode = UserManager.getInstance().getList().get(log).getUserCode();
-				System.out.print("accNumber : ");
-				int accNumber = Atm.scan.nextInt();
-				System.out.print("accPassword : ");
-				int accPassword = Atm.scan.nextInt();
-				if(!duplAccNum(accNumber)) {				
-					Account account = new Account(userCode, accNumber, accPassword);
-					this.list.add(account);
-				}else {
-					System.out.println("중복되는 계좌번호입니다.");
-				}
-			}else {
-				System.out.println("비밀번호를 다시 확인하세요");
-			}
-		}else {
-			System.out.println("로그인 후 이용");
+			// AccountManager 의 list 에 추가된 객체를 생성과 동시에 반환 받음
+			// -> User 객체가 가진 acc 즐겨찾기 목록에도 추가 
+			ArrayList<Account> accs = user.getAccs();
+			accs.add(acc);
+			user.setAccs(accs);	
 		}
-	}	
-	private boolean duplAccNum(int accNumber) {
-		boolean dupl = false;
-		for(Account account : this.list) {
-			if(account.getAccNumber() == accNumber) {
-				dupl = true;
-			}
-		}		
-		return dupl;		
+	}
+	
+	private int generateRandomCode() { // ####-####
+		int code = 0;
+		
+		while(true) {
+			code = (int)(Math.random() * 9000) + 1000;
+			
+			boolean dupl = false;
+			for(Account acc : this.list) {
+				if(acc.getAccNumber() == code) 
+					dupl = true;
+			}			
+			if(!dupl)
+				break;
+		}
+		
+		return code;
 	}
 
 	public void deleteAcc() {
-				
+		int idx = -1;
+		System.out.print("계좌번호 : ");
+		int accNumber = Atm.scanner.nextInt();		
+		
+		for(int i = 0; i < this.list.size(); i++) {
+			if(this.list.get(i).getAccNumber() == accNumber) {
+				idx = i;
+			}
+		}
+		if(idx != -1) {			
+			System.out.println("계좌철회 성공");
+		}else {
+			System.out.println("계좌번호 재확인");
+		}
 	}
-	
-	private int isLogin() {		
-		return UserManager.getInstance().getLog();
+
+	public void viewBalance() {		
+		int accNum = Atm.inputNumber("계좌번호");
+		
 	}
 }
