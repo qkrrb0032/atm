@@ -120,6 +120,7 @@ public class UserManager {
 			String chkPw = this.list.get(atm.getLog()).getPassword();
 			if(chkPw.equals(password)) {
 				this.list.remove(atm.getLog());
+				atm.setLog(-1);
 				//accManager.deleteAcc();
 			}
 		}else {
