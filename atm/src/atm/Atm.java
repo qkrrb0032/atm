@@ -50,12 +50,12 @@ public class Atm {
 			else if (select == MEM_LOGOUT) {
 				userM.logoutUser();
 			}
-//			else if (select == ACC_CREATE) {
-//				accM.createAcc();
-//			}
-//			else if (select == ACC_DELETE) {
-//				accM.deleteAcc();
-//			}
+			else if (select == ACC_CREATE) {
+				accM.createAcc();
+			}
+			else if (select == ACC_DELETE) {
+				accM.deleteAcc();
+			}
 //			else if (select == ACC_VIEW) {
 //				accM.viewAcc();
 //			}

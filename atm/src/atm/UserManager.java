@@ -19,7 +19,12 @@ public class UserManager {
 	}
 	
 	
+	public int getLog() {
+		return this.log;
+	}
+
 	private ArrayList<User> list = new ArrayList<User>();	
+	private int log = -1;
 
 	public void joinUser() {		
 		int userCode = generateRandomCode();		
@@ -58,26 +63,61 @@ public class UserManager {
 				if(user.getUserCode() == code) {
 					dupl = true;
 				}
-			}
-			
+			}			
 			if(!dupl) {
 				break;
 			}
-		}
-		
+		}		
 		return code;
 	}
 
 	public void leaveUser() {
+		if(isLogin()) {
+			System.out.print("password : ");
+			String password = Atm.scan.next();
 			
+			String userPassword = this.list.get(this.log).getPassword();
+			if(userPassword.equals(password)) {
+				this.list.remove(this.log);
+				System.out.println("회원탈퇴 완료");
+			}else {
+				System.out.println("비밀번호를 다시 확인하세요.");
+			}
+		}
 	}
-	
+
+	private boolean isLogin() {		
+		return this.log == -1 ? false : true;
+	}
+
 	public void loginUser() {
-		
+		if(this.list.size() > 0) {
+			System.out.print("id : ");
+			String id = Atm.scan.next();
+			System.out.print("password : ");
+			String password = Atm.scan.next();		
+			
+			for(int i = 0; i < this.list.size(); i++) {
+				String chkId = this.list.get(i).getId();
+				String chkPw = this.list.get(i).getPassword();
+				if(chkId.equals(id) && chkPw.equals(password)) {
+					this.log = i;
+				}
+			}
+			if(this.log != -1) {
+				System.out.printf("%s님 환영합니다.\n", this.list.get(log).getId());
+			}else {
+				System.out.println("회원정보를 다시 확인하세요.");
+			}
+		}
 	}
 	
 	public void logoutUser() {
-		
+		if(isLogin()) {
+			this.log = -1;
+			System.out.println("로그아웃 성공");
+		}
+
 	}
 
 	public ArrayList<User> getList() {		

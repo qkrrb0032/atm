@@ -44,8 +44,7 @@ public class Account {
 	}	
 	
 	@Override
-	public String toString() {
-		
+	public String toString() {		
 		return String.format("%d(%d) : %d", this.accNumber, this.accPassword, this.money);
 	}
 }
