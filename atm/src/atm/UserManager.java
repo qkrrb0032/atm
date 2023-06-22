@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class UserManager {
 	
 	private AccountManager accManager = AccountManager.getInstance();
-	private Atm atm = new Atm();
+	private Atm atm = new Atm("mybasdsad");
 	
 	private ArrayList<User> list = new ArrayList<User>();
 	
@@ -120,8 +120,10 @@ public class UserManager {
 			String chkPw = this.list.get(atm.getLog()).getPassword();
 			if(chkPw.equals(password)) {
 				this.list.remove(atm.getLog());
-				accManager.deleteAcc();
+				//accManager.deleteAcc();
 			}
+		}else {
+			System.out.println("들어감?");
 		}
 	}
 
