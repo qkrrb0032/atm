@@ -17,4 +17,10 @@ public class FileManager {
 	public static FileManager getInstace() {
 		return instance;
 	}
+	
+	
+	public void saveFile() {
+		
+		
+	}
 }

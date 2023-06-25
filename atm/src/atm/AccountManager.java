@@ -63,7 +63,9 @@ public class AccountManager {
 			}
 		}
 		if (idx != -1) {
-			System.out.println("계좌철회 성공");
+			System.out.println("1. " + this.list.get(idx));
+			this.list.remove(idx);
+			
 		} else {
 			System.out.println("계좌번호 재확인");
 		}
@@ -74,7 +76,99 @@ public class AccountManager {
 	}
 
 	public void viewBalance() {
-		int accNum = Atm.inputNumber("계좌번호");
+		if(isLogin()) {
+			int accNum = Atm.inputNumber("계좌번호");
+			int idx = -1;
+			for(int i = 0; i < this.list.size(); i++) {
+				if(accNum == this.list.get(i).getAccNumber()) {
+					idx = i;
+				}
+			}
+			if(idx != -1) {
+				System.out.println(this.list.get(idx));
+			}
+		}else {
+			System.out.println("로그인 후 이용가능");
+		}
+	}
 
+	public void inputMoney() {
+		if(isLogin()) {
+			System.out.print("입금할 계좌 : ");
+			int acc = Atm.scanner.nextInt();
+			int idx = -1;
+			for(int i = 0; i < this.list.size(); i++) {
+				if(acc == this.list.get(i).getAccNumber()) {
+					idx = i;
+				}
+			}
+			if(idx != -1) {
+				System.out.print("입금 금액 : ");
+				int money = Atm.scanner.nextInt();
+				if(money > 0) {
+					this.list.get(idx).setMoney(this.list.get(idx).getMoney() + money);
+					System.out.println("입금 완료");
+					System.out.printf("입금 후 금액 : %d",this.list.get(idx).getMoney());
+				}
+			}else {
+				System.out.println("존재하지 않는 계좌입니다.");
+			}
+		}else {
+			System.out.println("로그인 후 이용가능");
+		}
+	}
+
+	public void outMoney() {
+		if(isLogin()) {
+			System.out.print("출금할 계좌 : ");
+			int acc = Atm.scanner.nextInt();
+			int idx = -1;
+			for(int i = 0; i < this.list.size(); i++) {
+				if(acc == this.list.get(i).getAccNumber()) {
+					idx = i;
+				}
+			}
+			if(idx != -1) {
+				System.out.print("출금 금액 : ");
+				int money = Atm.scanner.nextInt();
+				if(this.list.get(idx).getMoney() - money >= 0) {
+					this.list.get(idx).setMoney(this.list.get(idx).getMoney() - money);
+					System.out.println("출금 완료");
+					System.out.printf("입금 후 금액 : %d",this.list.get(idx).getMoney());
+				}
+			}else {
+				System.out.println("존재하지 않는 계좌입니다.");
+			}
+		}else {
+			System.out.println("로그인 후 이용가능");
+		}
+	}
+
+	public void moveMoney() {
+		if(isLogin()) {			
+			System.out.print("빠질 계좌 : ");
+			int out = Atm.scanner.nextInt();
+			System.out.print("받을 계좌 : ");
+			int in = Atm.scanner.nextInt();
+			
+			int idx1 = -1;
+			int idx2 = -1;
+			for(int i = 0; i < this.list.size(); i++) {
+				if(out == this.list.get(i).getAccNumber()) {
+					idx1 = i;
+				}else if(in == this.list.get(i).getAccNumber()) {
+					idx2 = i;
+				}
+			}
+			if(idx1 != -1 && idx2 != -1) {
+				System.out.print("이체할 금액 : ");
+				int money = Atm.scanner.nextInt();
+				
+				this.list.get(idx1).setMoney(this.list.get(idx1).getMoney() - money);
+				this.list.get(idx2).setMoney(this.list.get(idx2).getMoney() + money);
+				System.out.printf("빠진 후 금액(%d) : %d",this.list.get(idx1).getAccNumber(), this.list.get(idx1).getMoney());
+				System.out.printf("받은 후 금액(%d) : %d",this.list.get(idx2).getAccNumber(), this.list.get(idx2).getMoney());
+			}
+		}
 	}
 }

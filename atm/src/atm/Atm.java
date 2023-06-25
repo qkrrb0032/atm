@@ -113,14 +113,14 @@ public class Atm {
 				accManager.deleteAcc();
 			else if(select == VIEW_BALANCE)
 				accManager.viewBalance();
-//			else if(select == INPUT_MONEY)
-//				accManager.inputMoney();
-//			else if(select == OUT_MONEY)
-//				accManager.outMoney();
-//			else if(select == MOVE_MONEY)
-//				accManager.moveMoney();
-//			else if(select == SAVE_FILE)
-//				fileManager.saveFile();
+			else if(select == INPUT_MONEY)
+				accManager.inputMoney();
+			else if(select == OUT_MONEY)
+				accManager.outMoney();
+			else if(select == MOVE_MONEY)
+				accManager.moveMoney();
+			else if(select == SAVE_FILE)
+				fileManager.saveFile();
 //			else if(select == LOAD_FILE)
 //				fileManager.loadFile();
 			else if(select == QUIT)
